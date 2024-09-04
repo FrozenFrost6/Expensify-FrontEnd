@@ -1,0 +1,17 @@
+html {
+    font-size: 62.5%; // right now 1 rem = 16px, so doing 62.5 will make 1 rem = 10px
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: $m-size;
+    background-color: white;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+}
