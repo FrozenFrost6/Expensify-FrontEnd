@@ -1,3 +1,16 @@
+The expensify app helps you track expenses over time and allows you to have and organized data analysis of money spent.
+
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
