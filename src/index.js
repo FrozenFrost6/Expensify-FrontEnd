@@ -36,7 +36,7 @@ store.dispatch(addExpense({
 	type: 'Food',
 	description: "Foodaholic paneer biriyani ",
 	amount: 310,
-	owedTo: 'anvesh',
+	owedTo: '',
 	createdAt: 25
 }))
 

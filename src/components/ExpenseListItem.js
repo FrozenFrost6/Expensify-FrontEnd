@@ -6,6 +6,7 @@
 // owedTo = 'Yourself',
 // createdAt = 0
 
+import moment from "moment";
 import { useNavigate } from "react-router";
 
 function ExpenseListItem({id, type, description, amount, owedTo, createdAt}) {
@@ -20,14 +21,19 @@ function ExpenseListItem({id, type, description, amount, owedTo, createdAt}) {
         navigate(`/edit-expense/${id}`);    
     }
 
+    const formatter = new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+    });
+
     return ( 
         <div>
             <h3>{type}</h3>
             <p>{description}</p>
             <div>
-                <p>Amount: {amount}</p>
-                <p>Owed to: {owedTo}</p>
-                <p>Date: {createdAt}</p>
+                <p>Amount: {formatter.format(amount)}</p>
+                <p>Owed to: {owedTo ? owedTo : '-'}</p>
+                <p>Date: {moment(createdAt).format('Do MMMM, YYYY')}</p>
             </div>
             {/* <button onClick={handleRemoveClick}>Remove</button> */}
             <button onClick={handleEditClick}>Edit</button>
