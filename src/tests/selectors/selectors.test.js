@@ -1,5 +1,5 @@
 import moment from "moment";
-import { getVisibleExpenses } from "../../selectors/selectors";
+import { getExpensesTotal, getVisibleExpenses } from "../../selectors/selectors";
 
 
 const expenses = [
@@ -31,6 +31,7 @@ const expenses = [
 
 
 
+// getVisibleExpenses tests
 
 test("Should filter by value", () => {
     const filters =  {
@@ -98,3 +99,34 @@ test("Should filter by end date", () => {
     const result = getVisibleExpenses(expenses, filters);
     expect(result).toEqual([ expenses[0], expenses[2] ] );
 });
+
+
+// getExpensesTotal tests
+
+test("Should return 0 for empty expenses array", () => {
+    const emptyExpenses = [];
+    const result = getExpensesTotal(emptyExpenses);
+    expect(result).toEqual(0);
+});
+
+
+test("Should return 0 for null object", () => {
+    const emptyExpenses = null;
+    const result = getExpensesTotal(emptyExpenses);
+    expect(result).toEqual(0);
+});
+
+
+test("Should return 0 for undefined object", () => {
+    const emptyExpenses = undefined;
+    const result = getExpensesTotal(emptyExpenses);
+    expect(result).toEqual(0);
+});
+
+
+test("Should return the correct total for expenses", () => {
+    const result = getExpensesTotal(expenses);
+    expect(result).toEqual(980);
+});
+
+

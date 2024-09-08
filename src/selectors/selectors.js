@@ -22,5 +22,13 @@ export const getVisibleExpenses = (expenses, {text, groupBy, sortBy, startDate, 
     });
 }
 
-
+export const getExpensesTotal = (expenses) => {
+    var total = 0;
+    if(expenses) {
+        expenses.map((expense) => {
+            total += expense.amount;
+        });
+    }
+    return total;
+}
   

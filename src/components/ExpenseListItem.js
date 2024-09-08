@@ -8,6 +8,7 @@
 
 import moment from "moment";
 import { useNavigate } from "react-router";
+import { INRFormatter } from "../formatters/CurrencyFormatter";
 
 function ExpenseListItem({id, type, description, amount, owedTo, createdAt}) {
     
@@ -21,17 +22,14 @@ function ExpenseListItem({id, type, description, amount, owedTo, createdAt}) {
         navigate(`/edit-expense/${id}`);    
     }
 
-    const formatter = new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-    });
+    
 
     return ( 
         <div>
             <h3>{type}</h3>
             <p>{description}</p>
             <div>
-                <p>Amount: {formatter.format(amount)}</p>
+                <p>Amount: {INRFormatter.format(amount)}</p>
                 <p>Owed to: {owedTo ? owedTo : '-'}</p>
                 <p>Date: {moment(createdAt).format('Do MMMM, YYYY')}</p>
             </div>
