@@ -22,6 +22,8 @@ export const getVisibleExpenses = (expenses, {text, groupBy, sortBy, startDate, 
     });
 }
 
+
+
 export const getExpensesTotal = (expenses) => {
     var total = 0;
     if(expenses) {

@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import ExpenseListItem from "./ExpenseListItem";
 import { getExpensesTotal, getVisibleExpenses } from "../selectors/selectors";
 import { INRFormatter } from "../formatters/CurrencyFormatter";
+import ExpensesSummary from "./ExpensesSummary";
 
 
 
@@ -12,12 +13,13 @@ function ExpenseList() {
 	const filters = useSelector((state) => (state.filters));
 
 	const expensesFiltered = getVisibleExpenses(expenses, filters);
-	const expensesTotal = getExpensesTotal(expenses);
+	const expensesTotal = getExpensesTotal(expensesFiltered);
 
 	return (
 		<div>
 			<h1>Expenses</h1>
-			<p>{expensesFiltered.length} expenses totalling to: {INRFormatter.format(expensesTotal)}</p>
+			<ExpensesSummary expensesCount={expensesFiltered.length} expensesTotal={expensesTotal}/>
+
 			{
 				expensesFiltered.map((expense) => {
 					return <ExpenseListItem key={expense.id} {...expense} />
