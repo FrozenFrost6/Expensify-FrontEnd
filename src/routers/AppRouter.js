@@ -7,20 +7,17 @@ import EditExpense from '../components/EditExpense';
 import HelpPage from '../components/HelpPage';
 import NotFoundPage from '../components/NotFoundPage';
 
-
-
 function AppRouter () {
     return (
         <BrowserRouter>
             <Header />
             <Routes>
-                <Route path="/" Component={ExpenseDashboard}></Route>
-                <Route path="/add-expense" Component={AddExpense}></Route>
-                <Route path="/edit-expense/:id" Component={EditExpense}></Route>
-                <Route path="/help" Component={HelpPage}></Route>
-                <Route path='*' Component={NotFoundPage}></Route>
+                <Route path="/" element={<ExpenseDashboard />} />
+                <Route path="/add-expense" element={<AddExpense />} />
+                <Route path="/edit-expense/:id" element={<EditExpense />} />
+                <Route path="/help" element={<HelpPage />} />
+                <Route path='*' element={<NotFoundPage />} />
             </Routes>
-                
         </BrowserRouter>  
     );
 }

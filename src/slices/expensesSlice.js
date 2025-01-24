@@ -24,17 +24,17 @@ const expensesSlice = createSlice({
   reducers: {
     addExpense: (state, action) => {
       const {
-        id = uuidv4(),
-        type = 'Bills',
+        expenseId = uuidv4(),
+        expenseType = 'Bills',
         description = '',
         amount = 0,
-        owedTo = 'Yourself',
+        owedTo = '',
         createdAt = 0
       } = action.payload;
 
       state.expenses.push({
-        id,
-        type,
+        expenseId,
+        expenseType,
         description,
         amount,
         owedTo,
@@ -42,12 +42,12 @@ const expensesSlice = createSlice({
       });
     },
     removeExpense: (state, action) => {
-      const { id } = action.payload;
-      state.expenses = state.expenses.filter(expense => expense.id !== id);
+      const { expenseId } = action.payload;
+      state.expenses = state.expenses.filter(expense => expense.expenseId !== expenseId);
     },
     editExpense: (state, action) => {
-      const { id, updates } = action.payload;
-      const editExpenseIndex = state.expenses.findIndex(expense => expense.id === id);
+      const { expenseId, updates } = action.payload;
+      const editExpenseIndex = state.expenses.findIndex(expense => expense.expenseId === expenseId);
 
       if (editExpenseIndex >= 0) {
         state.expenses[editExpenseIndex] = {
@@ -83,9 +83,12 @@ const expensesSlice = createSlice({
 			newDestType = newDestType.charAt(0).toUpperCase() + newDestType.slice(1);
 			state.expenseTypes[editTypeIndex] = newDestType;
 		}
-	}
+	},
+	clearExpenses: (state) => {
+		state.expenses = [];
+	  },
   }
 });
 
-export const { addExpense, removeExpense, editExpense, addExpenseType, removeExpenseType, editExpenseType} = expensesSlice.actions;
+export const { addExpense, removeExpense, editExpense, addExpenseType, removeExpenseType, editExpenseType, clearExpenses} = expensesSlice.actions;
 export default expensesSlice.reducer;

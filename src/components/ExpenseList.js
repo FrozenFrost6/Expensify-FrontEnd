@@ -22,7 +22,7 @@ function ExpenseList() {
 
 			{
 				expensesFiltered.map((expense) => {
-					return <ExpenseListItem key={expense.id} {...expense} />
+					return <ExpenseListItem key={expense.expenseId} {...expense} />
 				})
 			}		
 			

@@ -22,39 +22,39 @@ import 'react-dates/lib/css/_datepicker.css';
 
 
 
-store.dispatch(addExpense({
-	id: uuidv4(),
-	type: 'Food',
-	description: "Foodaholic egg biriyani",
-	amount: 280,
-	owedTo: 'anvesh',
-	createdAt: 30
-}))
+// store.dispatch(addExpense({
+// 	id: uuidv4(),
+// 	type: 'Food',
+// 	description: "Foodaholic egg biriyani",
+// 	amount: 280,
+// 	owedTo: 'anvesh',
+// 	createdAt: 30
+// }))
 
-store.dispatch(addExpense({
-	id: uuidv4(),
-	type: 'Food',
-	description: "Foodaholic paneer biriyani ",
-	amount: 310,
-	owedTo: '',
-	createdAt: 25
-}))
+// store.dispatch(addExpense({
+// 	id: uuidv4(),
+// 	type: 'Food',
+// 	description: "Foodaholic paneer biriyani ",
+// 	amount: 310,
+// 	owedTo: '',
+// 	createdAt: 25
+// }))
 
-store.dispatch(addExpense({
-	id: uuidv4(),
-	type: 'Food',
-	description: "Flowerdrum veg fried rice ",
-	amount: 315,
-	owedTo: 'anvesh',
-	createdAt: 45
-}))
+// store.dispatch(addExpense({
+// 	id: uuidv4(),
+// 	type: 'Food',
+// 	description: "Flowerdrum veg fried rice ",
+// 	amount: 315,
+// 	owedTo: 'anvesh',
+// 	createdAt: 45
+// }))
 
 
 store.subscribe(() => {
 	const state = store.getState();
 	const visibleExpenses = getVisibleExpenses(state.expenses.expenses, state.filters)
-	console.log(visibleExpenses)
-	console.log(state)
+	// console.log(visibleExpenses)
+	// console.log(state)
 })
 
 console.log(store.getState())
