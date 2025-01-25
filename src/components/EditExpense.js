@@ -5,26 +5,26 @@ import { editExpense, removeExpense } from "../slices/expensesSlice";
 
 function EditExpense() {
     
-    const {id} = useParams();
+    let {id} = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
+    id = parseInt(id);
+    
     const expenses = useSelector((state) => (state.expenses.expenses));
 
-    const expenseToEdit =  expenses.find((expense) => expense.id === id);
+    const expenseToEdit =  expenses.find((expense) =>  expense.expenseId === id);
 
 
-    console.log(editExpense)
 
     function handleExpenseFormEditSubmit(editedExpense) {
         console.log(editedExpense);
-        dispatch(editExpense({id: id, updates: editedExpense}));
+        dispatch(editExpense({expenseId: id, updates: editedExpense}));
         navigate('/')
     }
 
     function handleRemoveClick() {
-        dispatch(removeExpense({id:id}))
+        dispatch(removeExpense({expenseId:id}))
         navigate('/')
     }
 

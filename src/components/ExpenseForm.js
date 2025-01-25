@@ -6,7 +6,7 @@ import ExpenseTypeSelector from "./ExpenseTypeSelect";
 
 
 function ExpenseForm({ onSubmit, expense}) {
-    const expenseTypes = useSelector((state) => state.expenses.expenseTypes);
+    console.log(expense);
     const [expenseType, setExpenseType] = useState(expense ? expense.expenseType : '');
     const [description, setDescription] = useState(expense ? expense.description : '');
     const [amount, setAmount] = useState(expense ? expense.amount : '');

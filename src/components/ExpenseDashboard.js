@@ -9,6 +9,7 @@ import { apiConfig } from "../config/apiConfig";
 function ExpenseDashboard() {
     const dispatch = useDispatch();
     const authHeader = useSelector(state => state.auth.authHeader);
+    const expenses = useSelector(state => state.expenses.expenses);
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
@@ -19,7 +20,10 @@ function ExpenseDashboard() {
                 });
 
                 // Clear existing expenses before adding fetched expenses
+
                 dispatch(clearExpenses());
+
+                
                 
                 // Add each fetched expense to the store
                 response.data.forEach(expense => {
