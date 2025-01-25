@@ -1,10 +1,5 @@
 
-// id = uuidv4(),
-// type = 'Bills',
-// description = '',
-// amount = 0,
-// owedTo = 'Yourself',
-// createdAt = 0
+
 
 import moment from "moment";
 import { useNavigate } from "react-router";
@@ -14,9 +9,6 @@ function ExpenseListItem({expenseId, expenseType, description, amount, owedTo, c
     
     const navigate = useNavigate();
 
-    // function handleRemoveClick() {
-    //     dispatch(removeExpense({id:id}))
-    // }
 
     function handleEditClick() {
         navigate(`/edit-expense/${expenseId}`);    
@@ -40,5 +32,6 @@ function ExpenseListItem({expenseId, expenseType, description, amount, owedTo, c
         </div>
     );
 }
+
 
 export default ExpenseListItem;

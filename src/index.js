@@ -54,10 +54,10 @@ store.subscribe(() => {
 	const state = store.getState();
 	const visibleExpenses = getVisibleExpenses(state.expenses.expenses, state.filters)
 	// console.log(visibleExpenses)
-	// console.log(state)
+	console.log(state)
 })
 
-console.log(store.getState())
+// console.log(store.getState())
 // store.dispatch(setTextFilter('foodaholic'))
 // store.dispatch(addExpenseType('Fasduel'));
 // store.dispatch(removeExpenseType('fuel'));

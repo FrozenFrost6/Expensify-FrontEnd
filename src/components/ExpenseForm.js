@@ -7,7 +7,7 @@ import ExpenseTypeSelector from "./ExpenseTypeSelect";
 
 function ExpenseForm({ onSubmit, expense}) {
     const expenseTypes = useSelector((state) => state.expenses.expenseTypes);
-    const [type, setType] = useState(expense ? expense.type : '');
+    const [expenseType, setExpenseType] = useState(expense ? expense.expenseType : '');
     const [description, setDescription] = useState(expense ? expense.description : '');
     const [amount, setAmount] = useState(expense ? expense.amount : '');
     const [owedTo, setOwedTo] = useState(expense ? expense.owedTo : '');
@@ -19,11 +19,11 @@ function ExpenseForm({ onSubmit, expense}) {
         e.preventDefault();
         // Handle form submission, e.g., send data to an API or update state
         const formData = {
-            type,
+            expenseType,
             description,
             amount: parseFloat(amount),
             owedTo,
-            createdAt: date.valueOf()
+            createdAt: date.toISOString().slice(0, 19) // Format to 'yyyy-MM-ddTHH:mm:ss'
         };
 
         onSubmit(formData)
@@ -40,8 +40,8 @@ function ExpenseForm({ onSubmit, expense}) {
                 onChange={(e) => setType(e.target.value)} 
             />  */}
             <ExpenseTypeSelector 
-                value={type}
-                onChangeType={setType}
+                value={expenseType}
+                onChangeType={setExpenseType}
             /> 
             <br /><br />
             
