@@ -1,9 +1,12 @@
 const apiBaseUrl = 'http://localhost:8080';
 
-export const apiConfig = {
+const apiConfig = {
     apiBaseUrl: apiBaseUrl,
     apiPaths: {
         expenses: `${apiBaseUrl}/expenses`,
         login: `${apiBaseUrl}/login`
     }
 }
+
+
+export default apiConfig;

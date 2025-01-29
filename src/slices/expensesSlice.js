@@ -1,94 +1,144 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import apiConfig from "../config/apiConfig";
 
+// ** Async Thunks **
+export const fetchExpenses = createAsyncThunk(
+    "expenses/fetchExpenses",
+    async (_, { getState, rejectWithValue }) => {
+        const authHeader = getState().auth.authHeader;
+        try {
+            const response = await axios.get(apiConfig.apiPaths.expenses, {
+                headers: { Authorization: authHeader }
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "Failed to fetch expenses");
+        }
+    }
+);
+
+export const addExpense = createAsyncThunk(
+    "expenses/addExpense",
+    async (expenseData, { getState, rejectWithValue }) => {
+        const authHeader = getState().auth.authHeader;
+        try {
+            const response = await axios.post(apiConfig.apiPaths.expenses, expenseData, {
+                headers: { Authorization: authHeader }
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "Failed to add expense");
+        }
+    }
+);
+
+export const editExpense = createAsyncThunk(
+    "expenses/editExpense",
+    async (expense, { getState, rejectWithValue }) => {
+        const authHeader = getState().auth.authHeader;
+        try {
+            const response = await axios.put(`${apiConfig.apiPaths.expenses}/${expense.expenseId}`, expense, {
+                headers: { Authorization: authHeader }
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "Failed to edit expense");
+        }
+    }
+);
+
+export const removeExpense = createAsyncThunk(
+    "expenses/removeExpense",
+    async (expenseId, { getState, rejectWithValue }) => {
+        const authHeader = getState().auth.authHeader;
+        try {
+            await axios.delete(`${apiConfig.apiPaths.expenses}/${expenseId}`, {
+                headers: { Authorization: authHeader }
+            });
+            return expenseId;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "Failed to delete expense");
+        }
+    }
+);
+
+// ** Expenses Slice **
 const expensesSlice = createSlice({
-  name: 'expenses',
-  initialState: { 
-    expenses: [],
-	expenseTypes: [
-		'Food',
-		'Groceries',
-		'Fuel',
-		'Entertainment',
-		'House maintenance',
-		'Product',
-		'Clothes',
-		'Investments',
-		'Health',
-		'Bills',
-		'Fees',
-		'Transport',
-		'Other'
-	]
-  },
-  reducers: {
-    addExpense: (state, action) => {
-      const {
-        expenseId = uuidv4(),
-        expenseType = 'Bills',
-        description = '',
-        amount = 0,
-        owedTo = '',
-        createdAt = 0
-      } = action.payload;
+    name: "expenses",
+    initialState: { 
+        expenses: [],
+        expenseTypes: [
+            "Food", "Groceries", "Fuel", "Entertainment", "House maintenance",
+            "Product", "Clothes", "Investments", "Health", "Bills",
+            "Fees", "Transport", "Other"
+        ],
+        status: "idle", // "idle" | "loading" | "succeeded" | "failed"
+        error: null
+    },
+    reducers: {
+        clearExpenses: (state) => {
+            state.expenses = [];
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            // ** Fetch Expenses **
+            .addCase(fetchExpenses.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchExpenses.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.expenses = action.payload;
+            })
+            .addCase(fetchExpenses.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
 
-      state.expenses.push({
-        expenseId,
-        expenseType,
-        description,
-        amount,
-        owedTo,
-        createdAt
-      });
-    },
-    removeExpense: (state, action) => {
-      const { expenseId } = action.payload;
-      state.expenses = state.expenses.filter(expense => expense.expenseId !== expenseId);
-    },
-    editExpense: (state, action) => {
-      const { expenseId, updates } = action.payload;
-      const editExpenseIndex = state.expenses.findIndex(expense => expense.expenseId === expenseId);
+            // ** Add Expense **
+            .addCase(addExpense.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addExpense.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.expenses.push(action.payload);
+            })
+            .addCase(addExpense.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
 
-      if (editExpenseIndex >= 0) {
-        state.expenses[editExpenseIndex] = {
-          ...state.expenses[editExpenseIndex],
-          ...updates
-        };
-      }
-    },
-	addExpenseType: (state, action) => {
-		let expType = action.payload;
-	
-		if (expType && !state.expenseTypes.find(type => type.toLowerCase() === expType.toLowerCase())) {
-			expType = expType.trim().toLowerCase();
-			expType = expType.charAt(0).toUpperCase() + expType.slice(1);
-			// Insert the new type before the last element (which is "Other")
-			state.expenseTypes = [
-				...state.expenseTypes.slice(0, -1), // All elements except the last one ("Other")
-				expType,
-				state.expenseTypes[state.expenseTypes.length - 1] // The last element ("Other")
-			];
-		}
-	}, 
-	removeExpenseType: (state, action) => {
-		const expType = action.payload;
-		state.expenseTypes = state.expenseTypes.filter(type => type.toLocaleLowerCase() !== expType.toLowerCase());
-	}, 
-	editExpenseType: (state, action) => {
-		const { sourceType, destType } = action.payload;
-		const editTypeIndex = state.expenseTypes.findIndex(expType => expType.toLocaleLowerCase() === sourceType.toLocaleLowerCase());
-	
-		if (editTypeIndex >= 0) {
-			let newDestType = destType.trim().toLowerCase();
-			newDestType = newDestType.charAt(0).toUpperCase() + newDestType.slice(1);
-			state.expenseTypes[editTypeIndex] = newDestType;
-		}
-	},
-	clearExpenses: (state) => {
-		state.expenses = [];
-	  },
-  }
+            // ** Edit Expense **
+            .addCase(editExpense.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(editExpense.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                const index = state.expenses.findIndex(expense => expense.expenseId === action.payload.expenseId);
+                if (index !== -1) {
+                    state.expenses[index] = action.payload;
+                }
+            })
+            .addCase(editExpense.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
+
+            // ** Remove Expense **
+            .addCase(removeExpense.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(removeExpense.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.expenses = state.expenses.filter(expense => expense.expenseId !== action.payload);
+            })
+            .addCase(removeExpense.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            });
+    }
 });
 
-export const { addExpense, removeExpense, editExpense, addExpenseType, removeExpenseType, editExpenseType, clearExpenses} = expensesSlice.actions;
+export const { addExpenseType, removeExpenseType, editExpenseType, clearExpenses } = expensesSlice.actions;
 export default expensesSlice.reducer;

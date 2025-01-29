@@ -18,14 +18,16 @@ function EditExpense() {
 
 
     function handleExpenseFormEditSubmit(editedExpense) {
-        console.log(editedExpense);
-        dispatch(editExpense({expenseId: id, updates: editedExpense}));
-        navigate('/')
+        dispatch(editExpense({
+            expenseId:id, 
+            ...editedExpense}
+        ));
+        navigate('/');
     }
 
     function handleRemoveClick() {
-        dispatch(removeExpense({expenseId:id}))
-        navigate('/')
+        dispatch(removeExpense(id));
+        navigate('/');
     }
 
     return ( 
